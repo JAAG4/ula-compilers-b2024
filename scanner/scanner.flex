@@ -5,8 +5,10 @@
 SPACE      [ \t\n]
 DIGIT      [0-9]
 LETTER     [A-Za-z]
+
 IDENTIFIER (_|{LETTER})({DIGIT}|{LETTER}|_)*
 TEXT       \"({DIGIT}|{LETTER}|{SPACE})*\"
+NUMBER     {DIGIT}+
 
 %%
 {SPACE}          { /* Ignore */ }
@@ -32,6 +34,7 @@ TEXT       \"({DIGIT}|{LETTER}|{SPACE})*\"
 "{"              {return TOKEN_L_BRACE;}
 "}"              {return TOKEN_R_BRACE;}
 
+{NUMBER} {return TOKEN_NUMBER;}
 {IDENTIFIER} { return TOKEN_IDENTIFIER; }
 {TEXT}       { return TOKEN_STRING; }
 %%

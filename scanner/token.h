@@ -26,6 +26,7 @@ typedef enum
     TOKEN_L_BRACE = 277,
     TOKEN_R_BRACE = 278,
     TOKEN_STRING = 280,
+    TOKEN_NUMBER = 281,
 } token_t;
 
 inline const char *token_str(token_t t)
@@ -78,7 +79,8 @@ inline const char *token_str(token_t t)
         return "<L_BRACE>";
     case TOKEN_R_BRACE:
         return "<R_BRACE>";
-
+    case TOKEN_NUMBER:
+        return "<TOKEN_NUMBER>";
     default:
         return "<UNKNOWN>";
     }
