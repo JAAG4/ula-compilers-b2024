@@ -25,6 +25,7 @@ NUMBER     {DIGIT}+
 "+"              {return TOKEN_ADDITION;}
 "-"              {return TOKEN_SUBSTRACTION;}
 "*"              {return TOKEN_MULTIPLICATION;}
+"/"              {return TOKEN_DIVISION;}
 "and"            {return TOKEN_LOGIC_AND;}
 "or"             {return TOKEN_LOGIC_OR;}
 "not"            {return TOKEN_LOGIC_NOT;}
@@ -33,6 +34,11 @@ NUMBER     {DIGIT}+
 ")"              {return TOKEN_R_PARENTHESIS;}
 "{"              {return TOKEN_L_BRACE;}
 "}"              {return TOKEN_R_BRACE;}
+","              {return TOKEN_COMMA;}
+"<"              {return LESSTHAN_TOKEN;}
+">"              {return GREATERTHAN_TOKEN;}
+"true"           {return TOKEN_TRUE;}
+"false"          {return TOKEN_FALSE;}
 
 {NUMBER} {return TOKEN_NUMBER;}
 {IDENTIFIER} { return TOKEN_IDENTIFIER; }

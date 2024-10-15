@@ -1,0 +1,8 @@
+function int sum(int a,int b) 
+var int result = a + b
+return result
+
+
+var int x
+x = sum(10,5)
+print x

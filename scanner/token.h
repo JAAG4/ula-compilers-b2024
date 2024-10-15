@@ -27,6 +27,12 @@ typedef enum
     TOKEN_R_BRACE = 278,
     TOKEN_STRING = 280,
     TOKEN_NUMBER = 281,
+    TOKEN_DIVISION = 282,
+    LESSTHAN_TOKEN = 283,
+    GREATERTHAN_TOKEN = 284,
+    TOKEN_TRUE = 285,
+    TOKEN_FALSE = 286,
+    TOKEN_COMMA = 287
 } token_t;
 
 inline const char *token_str(token_t t)
@@ -61,6 +67,8 @@ inline const char *token_str(token_t t)
         return "<SUBSTRACTION>";
     case TOKEN_MULTIPLICATION:
         return "<MULTIPLICATION>";
+    case TOKEN_DIVISION:
+        return "<TOKEN_DIVISION>";
     case TOKEN_LOGIC_AND:
         return "<LOGIC_AND>";
     case TOKEN_LOGIC_OR:
@@ -81,6 +89,18 @@ inline const char *token_str(token_t t)
         return "<R_BRACE>";
     case TOKEN_NUMBER:
         return "<TOKEN_NUMBER>";
+    case LESSTHAN_TOKEN:
+        return "<LESSTHAN_TOKEN>";
+    case GREATERTHAN_TOKEN:
+        return "<GREATERTHAN_TOKEN>";
+    case TOKEN_TRUE:
+        return "<TOKEN_TRUE>";
+    case TOKEN_FALSE:
+        return "<TOKEN_FALSE>";
+    case TOKEN_STRING:
+        return "<TOKEN_STRING>";
+    case TOKEN_COMMA:
+        return "<TOKEN_COMMA>";
     default:
         return "<UNKNOWN>";
     }
