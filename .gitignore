@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Other
+_scanner
+.vscode
+parser/parser.c
+parser/parser.output
+parser/token.h
+scanner/scanner.c
