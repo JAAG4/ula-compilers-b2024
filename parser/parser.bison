@@ -42,14 +42,13 @@ int yyerror(const char*);
 program : expression
         ;
 
-statement :     definition statement
-            |   proposition statement
-            |   assignment statement
-            ;
+statement:      definition | assignment
+        ;
 
 expression : expression TOKEN_ADDITION term
      | expression TOKEN_SUBSTRACTION term
      | term
+     | bool_logicals
      ;
 
 datatype :    TOKEN_INTEGER
@@ -57,38 +56,30 @@ datatype :    TOKEN_INTEGER
             | TOKEN_STRING
             ;
 
-definition:     TOKEN_VARIABLE datatype
-            |   TOKEN_VARIABLE datatype
-            |   TOKEN_VARIABLE datatype
-            ;
+definition:     TOKEN_VARIABLE datatype TOKEN_IDENTIFIER
+            |   TOKEN_VARIABLE datatype assignment
+;
 
-assignment:     TOKEN_IDENTIFIER TOKEN_ASSIGN booleans
+assignment:     TOKEN_IDENTIFIER TOKEN_ASSIGN bool_logicals
             |   TOKEN_IDENTIFIER TOKEN_ASSIGN expression
             |   TOKEN_IDENTIFIER TOKEN_ASSIGN TOKEN_NUMBER
-            ;
-
-expression :    expression TOKEN_ADDITION term
-            |   expression TOKEN_SUBSTRACTION term
-            |   term
-            |   booleans
             ;
 
 comparatives:   term LESSTHAN_TOKEN term
             |   term GREATERTHAN_TOKEN term
 
-boolvals:           TOKEN_TRUE | TOKEN_FALSE;
+boolvals:       TOKEN_TRUE | TOKEN_FALSE;
 
-booleans:       boolvals
+bool_logicals:       boolvals
             |   boolvals TOKEN_LOGIC_AND boolvals
             |   boolvals TOKEN_LOGIC_OR boolvals
             |   boolvals TOKEN_LOGIC_EQUAL boolvals
-            |   TOKEN_LOGIC_NOT booleans
-            |   TOKEN_L_PARENTHESIS booleans TOKEN_R_PARENTHESIS
+            |   TOKEN_LOGIC_NOT bool_logicals
             |   comparatives
 
 term :       TOKEN_IDENTIFIER
-            |   term TOKEN_MULTIPLICATION term
-            |   term TOKEN_DIVISION term
+            |   term TOKEN_MULTIPLICATION factor
+            |   term TOKEN_DIVISION factor
             |   factor
             ;
 
