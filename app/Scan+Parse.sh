@@ -1,0 +1,8 @@
+echo "TESTING"
+echo "==> $1"
+echo "=> Scanner"
+./_scanner "$1"
+echo "=> Validator"
+./validator "$1"
+echo "- - - - - - - -"
+echo " "
