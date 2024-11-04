@@ -40,7 +40,8 @@ int main(int argc, char *argv[])
             break;
         }
 
-        printf("Token: %s value: %s\n", token_str(t), yytext);
+        // printf("Token: %s value: %s\n", token_str(t), yytext);
+        printf("%s\t\t%s\n", token_str(t), yytext);
     }
 
     return 0;
