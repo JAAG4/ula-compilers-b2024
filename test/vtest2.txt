@@ -1,8 +1,0 @@
-var int x = 5
-x = x + 10
-
-if x not == 99
-print "Text"
-
-else
-print "Foo"
