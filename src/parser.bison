@@ -75,6 +75,7 @@ assignment: TOKEN_IDENTIFIER TOKEN_ASSIGN expression
 
 comparatives:   term LESSTHAN_TOKEN term
             |   term GREATERTHAN_TOKEN term
+            |   term TOKEN_LOGIC_EQUAL term
 ;
 
 boolvals:       TOKEN_TRUE | TOKEN_FALSE
