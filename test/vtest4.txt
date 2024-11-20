@@ -1,3 +1,0 @@
-function void iprint(int a)
-print a
-return void

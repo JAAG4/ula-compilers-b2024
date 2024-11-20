@@ -4,11 +4,11 @@ BISON = bison -Wcounterexamples --defines=token.h
 
 all: validator
 
-validator: parser.o scanner.o main.o 
-	$(CXX) scanner.o parser.o main.o -o validator
+validator: parser.o scanner.o main_validator.o 
+	$(CXX) scanner.o parser.o main_validator.o -o ../build/validator
 
 _scanner: scanner.o main_scanner.o
-	$(CC) scanner.o main_scanner.o -o $@
+	$(CC) scanner.o main_scanner.o -o ../build/$@
 
 main_scanner.o: main_scanner.c token.h
 	$(CC) -c $< -o $@
@@ -25,9 +25,9 @@ scanner.o: token.h scanner.c
 scanner.c: scanner.flex
 	$(FLEX) -o scanner.c scanner.flex
 
-main.o: token.h main.c
-	$(CXX) -c main.c
+main_validator.o: token.h main_validator.c
+	$(CXX) -c main_validator.c
 
 .PHONY:
 clean:
-	$(RM) *.o parser.c parser.output token.h scanner.c validator
+	$(RM) *.o parser.c parser.output token.h scanner.c validator _scanner ../build/validator

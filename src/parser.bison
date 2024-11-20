@@ -41,34 +41,44 @@ int yyerror(const char*);
 %token TOKEN_NEWLINE
 %%
 program : expression | statement
+;
 
-        ;
+statement:      definition | assignment | return
+;
 
-statement:      definition | assignment
-        ;
+return : TOKEN_RETURN expression | TOKEN_RETURN TOKEN_VOID
+;
 
 expression : expression TOKEN_ADDITION term
      | expression TOKEN_SUBSTRACTION term
      | term
      | bool_logicals
-     ;
+;
 
 datatype :    TOKEN_INTEGER
             | TOKEN_VOID
             | TOKEN_STRING
-            ;
+;
 
 definition:     TOKEN_VARIABLE datatype TOKEN_IDENTIFIER
             |   TOKEN_VARIABLE datatype assignment
+            |   TOKEN_DECLARE_FUNCTION datatype TOKEN_IDENTIFIER parameter
+;
+
+parameter : TOKEN_L_PARENTHESIS datatype TOKEN_IDENTIFIER TOKEN_R_PARENTHESIS
+          | TOKEN_L_PARENTHESIS datatype TOKEN_IDENTIFIER TOKEN_COMMA parameter
+          | datatype TOKEN_IDENTIFIER TOKEN_R_PARENTHESIS
 ;
 
 assignment: TOKEN_IDENTIFIER TOKEN_ASSIGN expression
-            ;
+;
 
 comparatives:   term LESSTHAN_TOKEN term
             |   term GREATERTHAN_TOKEN term
+;
 
-boolvals:       TOKEN_TRUE | TOKEN_FALSE;
+boolvals:       TOKEN_TRUE | TOKEN_FALSE
+;
 
 bool_logicals:       boolvals
             |   boolvals TOKEN_LOGIC_AND boolvals
@@ -76,17 +86,18 @@ bool_logicals:       boolvals
             |   boolvals TOKEN_LOGIC_EQUAL boolvals
             |   TOKEN_LOGIC_NOT bool_logicals
             |   comparatives
+;
 
 term :       TOKEN_IDENTIFIER
             |   term TOKEN_MULTIPLICATION factor
             |   term TOKEN_DIVISION factor
             |   factor
-            ;
+;
 
 factor : TOKEN_SUBSTRACTION factor
        | TOKEN_L_PARENTHESIS expression TOKEN_R_PARENTHESIS
        | TOKEN_NUMBER
-       ;
+;
 %%
 
 int yyerror(const char* s)
