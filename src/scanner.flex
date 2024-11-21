@@ -3,7 +3,7 @@
 %}
 
 SPACE      [ \t]
-TOKEN_NEWLINE [\n]
+TOKEN_NEWLINE [\n\r]+
 DIGIT      [0-9]
 LETTER     [A-Za-z]
 
@@ -40,7 +40,7 @@ NUMBER     {DIGIT}+
 ">"              {return GREATERTHAN_TOKEN;}
 "true"           {return TOKEN_TRUE;}
 "false"          {return TOKEN_FALSE;}
-TOKEN_NEWLINE    {return TOKEN_NEWLINE;}
+{TOKEN_NEWLINE}    {return TOKEN_NEWLINE;}
 
 {NUMBER} {return TOKEN_NUMBER;}
 {IDENTIFIER} { return TOKEN_IDENTIFIER; }

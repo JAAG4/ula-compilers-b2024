@@ -1,9 +1,13 @@
 %{
 #include <stdio.h>
+#include "expressions.hpp"
+#include <iostream>
 
+#define YYSTYPE Expression*
 extern int yylex();
 extern char* yytext;
 int yyerror(const char*);
+Expression* parser_result{nullptr};
 %}
 
 
@@ -38,66 +42,42 @@ int yyerror(const char*);
 %token  TOKEN_NUMBER
 %token  TOKEN_IDENTIFIER
 %token  TOKEN_STRING
-%token TOKEN_NEWLINE
+%token  TOKEN_NEWLINE
 %%
-program : expression | statement
+program : expression { parser_result = $1; }
 ;
 
-statement:      definition | assignment | return
-;
-
-return : TOKEN_RETURN expression | TOKEN_RETURN TOKEN_VOID
-;
-
-expression : expression TOKEN_ADDITION term
-     | expression TOKEN_SUBSTRACTION term
-     | term
+expression : expression TOKEN_ADDITION term { $$ = new Addition($1, $3); }
+     | expression TOKEN_SUBSTRACTION term { $$ = new Substraction($1, $3); }
+     | term { $$ = $1; }
      | bool_logicals
 ;
 
-datatype :    TOKEN_INTEGER
-            | TOKEN_VOID
-            | TOKEN_STRING
+comparatives:   term LESSTHAN_TOKEN term { $$ = new ComparisonLT($1, $3); }
+            |   term GREATERTHAN_TOKEN term{ $$ = new ComparisonGT($1, $3); }
+            |   term TOKEN_LOGIC_EQUAL term{ $$ = new ComparisonEQ($1, $3); }
 ;
 
-definition:     TOKEN_VARIABLE datatype TOKEN_IDENTIFIER
-            |   TOKEN_VARIABLE datatype assignment
-            |   TOKEN_DECLARE_FUNCTION datatype TOKEN_IDENTIFIER parameter
+boolvals:       TOKEN_TRUE {$$ = new Value(1);} | TOKEN_FALSE {$$ = new Value(0);}
 ;
 
-parameter : TOKEN_L_PARENTHESIS datatype TOKEN_IDENTIFIER TOKEN_R_PARENTHESIS
-          | TOKEN_L_PARENTHESIS datatype TOKEN_IDENTIFIER TOKEN_COMMA parameter
-          | datatype TOKEN_IDENTIFIER TOKEN_R_PARENTHESIS
+bool_logicals:  boolvals { $$ = $1; }
+            |   boolvals TOKEN_LOGIC_AND boolvals{ $$ = new BooleanAnd($1, $3); }
+            |   boolvals TOKEN_LOGIC_OR boolvals{ $$ = new BooleanOr($1, $3); }
+            |   TOKEN_LOGIC_NOT bool_logicals{ $$ = new BooleanNot($1); }
+            |   comparatives { $$ = $1; }
+            | factor TOKEN_LOGIC_AND boolvals
+
 ;
 
-assignment: TOKEN_IDENTIFIER TOKEN_ASSIGN expression
+term :    term TOKEN_MULTIPLICATION factor { $$ = new Multiplication($1, $3); }
+            |   term TOKEN_DIVISION factor {$$ = new Division($1,$3);}
+            |   factor {$$ = $1;}
 ;
 
-comparatives:   term LESSTHAN_TOKEN term
-            |   term GREATERTHAN_TOKEN term
-            |   term TOKEN_LOGIC_EQUAL term
-;
-
-boolvals:       TOKEN_TRUE | TOKEN_FALSE
-;
-
-bool_logicals:       boolvals
-            |   boolvals TOKEN_LOGIC_AND boolvals
-            |   boolvals TOKEN_LOGIC_OR boolvals
-            |   boolvals TOKEN_LOGIC_EQUAL boolvals
-            |   TOKEN_LOGIC_NOT bool_logicals
-            |   comparatives
-;
-
-term :       TOKEN_IDENTIFIER
-            |   term TOKEN_MULTIPLICATION factor
-            |   term TOKEN_DIVISION factor
-            |   factor
-;
-
-factor : TOKEN_SUBSTRACTION factor
-       | TOKEN_L_PARENTHESIS expression TOKEN_R_PARENTHESIS
-       | TOKEN_NUMBER
+factor : TOKEN_SUBSTRACTION factor {$$ = new Substraction(new Value(0),$2);}
+       | TOKEN_L_PARENTHESIS expression TOKEN_R_PARENTHESIS {$$ = $2;}
+       | TOKEN_NUMBER {$$ = new Value(std::stoi(yytext));}
 ;
 %%
 

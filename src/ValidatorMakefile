@@ -4,8 +4,10 @@ BISON = bison -Wcounterexamples --defines=token.h
 
 all: validator
 
-validator: parser.o scanner.o main_validator.o 
-	$(CXX) scanner.o parser.o main_validator.o -o ../build/validator
+repl: 
+	$(CXX)  repl.cpp -o repl
+validator: parser.o scanner.o main_validator.o expressions.o
+	$(CXX) scanner.o parser.o main_validator.o expressions.o -o ../build/validator
 
 _scanner: scanner.o main_scanner.o
 	$(CC) scanner.o main_scanner.o -o ../build/$@
@@ -28,6 +30,9 @@ scanner.c: scanner.flex
 main_validator.o: token.h main_validator.c
 	$(CXX) -c main_validator.c
 
+expressions.o: expressions.hpp expressions.cpp
+	$(CXX) -c -I. expressions.cpp
+
 .PHONY:
 clean:
-	$(RM) *.o parser.c parser.output token.h scanner.c validator _scanner ../build/validator
+	$(RM) *.o parser.c parser.output token.h scanner.c validator _scanner ../build/validator repl
