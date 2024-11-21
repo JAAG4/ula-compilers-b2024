@@ -10,6 +10,7 @@ int yyerror(const char*);
 Expression* parser_result{nullptr};
 %}
 
+%define parse.error verbose
 
 %token  TOKEN_ASSIGN
 %token  TOKEN_VARIABLE

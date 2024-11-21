@@ -4,8 +4,8 @@ BISON = bison -Wcounterexamples --defines=token.h
 
 all: validator
 
-repl: 
-	$(CXX)  repl.cpp -o repl
+repl: parser.o scanner.o expressions.o
+	$(CXX)  repl.cpp scanner.o parser.o expressions.o -o repl
 validator: parser.o scanner.o main_validator.o expressions.o
 	$(CXX) scanner.o parser.o main_validator.o expressions.o -o ../build/validator
 
